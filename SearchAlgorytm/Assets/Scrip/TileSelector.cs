@@ -7,58 +7,38 @@ public class TileSelector : MonoBehaviour
 {
     public Camera main;
     public Tilemap tilemap;
-    public Vector3 offset = new Vector3 (0, 0.3f, 0);
+    public Vector3 offSet = new Vector3(0, 0.3f, 0);
+
     public TileBase originTile;
     public TileBase destinationTile;
-    public DeTinMarin floodFill;
 
     private Dictionary<Tilemap, Vector3Int> _previousPosition = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _origin = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _goal = new Dictionary<Tilemap, Vector3Int>();
 
-    //Cambiar Mode de TileMap y progect settings cambiar graphics a 0,1,-1
-
+    public Dijkstra floodFill;
     private void Start()
     {
         _previousPosition[tilemap] = new Vector3Int(-1, -1, 0);
+        //_origin[tilemap] = new Vector3Int(0, 0, 0);
     }
 
     private void Update()
     {
-        SelecTile();
-
-        if(Input.GetMouseButtonDown(0)) 
+        SelectTile();
+        if (Input.GetMouseButton(0))
         {
-            DetectTileClick(isOrigin:true);
+            DetectTileClick(true);
         }
-        if (Input.GetMouseButtonDown(1))
+        else if (Input.GetMouseButton(1))
         {
-            DetectTileClick(isOrigin:false);
+            DetectTileClick(false);
         }
-
-        if(Input.GetKeyDown(KeyCode.A)) 
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            FloodFill();
+            StartFloodFill();
         }
     }
-
-    private void SelecTile()
-    {
-        Vector3 mousePosition = main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int tilePosition = tilemap.WorldToCell(mousePosition);
-        tilePosition.z = 0;
-        
-        if (tilemap.HasTile(tilePosition)) 
-        {
-            tilemap.SetTransformMatrix(tilePosition, Matrix4x4.TRS(offset, Quaternion.Euler(0, 0, 0), Vector3.one));
-            tilemap.SetTransformMatrix(_previousPosition[tilemap], Matrix4x4.identity);
-
-            _previousPosition[tilemap] = tilePosition;
-
-        }
-
-    }
-
     private void DetectTileClick(bool isOrigin)
     {
         Vector3 mousePosition = main.ScreenToWorldPoint(Input.mousePosition);
@@ -68,31 +48,39 @@ public class TileSelector : MonoBehaviour
         TileBase newTile = isOrigin ? originTile : destinationTile;
         Dictionary<Tilemap, Vector3Int> selectedDictionary = isOrigin ? _origin : _goal;
 
-
         if (tilemap.HasTile(tilePosition))
         {
             var oldTile = tilemap.GetTile(tilePosition);
             tilemap.SetTile(tilePosition, newTile);
-
             if (selectedDictionary.ContainsKey(tilemap))
             {
                 tilemap.SetTile(selectedDictionary[tilemap], oldTile);
             }
-
-           
+            //tilemap.SetTile(_origin[tilemap], oldTile);
             selectedDictionary[tilemap] = tilePosition;
         }
+    }
+    private void SelectTile()
+    {
+        Vector3 mousePosition = main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int tilePosition = tilemap.WorldToCell(mousePosition);
+        tilePosition.z = 0;
 
+        if (tilemap.HasTile(tilePosition))
+        {
+            tilemap.SetTransformMatrix(tilePosition, Matrix4x4.TRS(offSet, Quaternion.Euler(0, 0, 0), Vector3.one));
+            tilemap.SetTransformMatrix(_previousPosition[tilemap], Matrix4x4.identity);
+            _previousPosition[tilemap] = tilePosition;
+        }
     }
 
-    private void FloodFill()
+    private void StartFloodFill()
     {
         floodFill.Origin = _origin[tilemap];
         floodFill.Goal = _goal[tilemap];
-        floodFill.visitedTile = originTile;
         floodFill.tileMap = tilemap;
+        floodFill.visitedTile = originTile;
         floodFill.pathTile = destinationTile;
-
         StartCoroutine(floodFill.FloodFill2D());
     }
 }
