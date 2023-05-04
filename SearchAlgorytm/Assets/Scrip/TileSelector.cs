@@ -16,7 +16,7 @@ public class TileSelector : MonoBehaviour
     private Dictionary<Tilemap, Vector3Int> _origin = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _goal = new Dictionary<Tilemap, Vector3Int>();
 
-    public Dijkstra floodFill;
+    public Heuristic floodFill;
     private void Start()
     {
         _previousPosition[tilemap] = new Vector3Int(-1, -1, 0);
