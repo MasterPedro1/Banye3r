@@ -16,7 +16,16 @@ public class TileSelector : MonoBehaviour
     private Dictionary<Tilemap, Vector3Int> _origin = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _goal = new Dictionary<Tilemap, Vector3Int>();
 
-    public Heuristic floodFill;
+    public Heuristic heuristic;
+    public FloofFill floodFill;
+    public Dijkstra dijkstra;
+    public A a;
+
+    [SerializeField] private bool _floodfill;
+    [SerializeField] private bool _heuristic;
+    [SerializeField] private bool _dijkstra;
+    [SerializeField] private bool _a;
+
     private void Start()
     {
         _previousPosition[tilemap] = new Vector3Int(-1, -1, 0);
@@ -34,9 +43,12 @@ public class TileSelector : MonoBehaviour
         {
             DetectTileClick(false);
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartFloodFill();
+            if(_floodfill)StartFloodFill();
+            if(_dijkstra)StartDijkstra();
+            if(_heuristic)StartHeuristic();
+            if(_a)StartA();
         }
     }
     private void DetectTileClick(bool isOrigin)
@@ -82,5 +94,34 @@ public class TileSelector : MonoBehaviour
         floodFill.visitedTile = originTile;
         floodFill.pathTile = destinationTile;
         StartCoroutine(floodFill.FloodFill2D());
+    } 
+    
+    private void StartDijkstra()
+    {
+        dijkstra.Origin = _origin[tilemap];
+        dijkstra.Goal = _goal[tilemap];
+        dijkstra.tileMap = tilemap;
+        dijkstra.visitedTile = originTile;
+        dijkstra.pathTile = destinationTile;
+        StartCoroutine(dijkstra.FloodFill2D());
+    } 
+    
+    private void StartHeuristic()
+    {
+        heuristic.Origin = _origin[tilemap];
+        heuristic.Goal = _goal[tilemap];
+        heuristic.tileMap = tilemap;
+        heuristic.visitedTile = originTile;
+        heuristic.pathTile = destinationTile;
+        StartCoroutine(heuristic.FloodFill2D());
+    }
+    private void StartA()
+    {
+        a.Origin = _origin[tilemap];
+        a.Goal = _goal[tilemap];
+        a.tileMap = tilemap;
+        a.visitedTile = originTile;
+        a.pathTile = destinationTile;
+        StartCoroutine(a.FloodFill2D());
     }
 }
