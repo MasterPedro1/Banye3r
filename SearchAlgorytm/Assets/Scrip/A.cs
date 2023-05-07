@@ -55,9 +55,9 @@ public class A : MonoBehaviour
         double cost = nextTile.name switch
         {
             "isometric_angled_pixel_0020" => 1,
-            "isometric_angled_pixel_0019" => 20,
-            "isometric_angled_pixel_0014" => 30,
-            "isometric_angled_pixel_0017" => 40,
+            "isometric_angled_pixel_0019" => 200,
+            "isometric_angled_pixel_0014" => 300,
+            "isometric_angled_pixel_0017" => 400,
             _ => 1,
         };
 

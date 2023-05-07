@@ -78,11 +78,17 @@ public class TileSelector : MonoBehaviour
         Vector3Int tilePosition = tilemap.WorldToCell(mousePosition);
         tilePosition.z = 0;
 
+        if (tilePosition != _previousPosition[tilemap])
+        {
         if (tilemap.HasTile(tilePosition))
         {
             tilemap.SetTransformMatrix(tilePosition, Matrix4x4.TRS(offSet, Quaternion.Euler(0, 0, 0), Vector3.one));
+        }
+        if (tilemap.HasTile(_previousPosition[tilemap]))
+        {
             tilemap.SetTransformMatrix(_previousPosition[tilemap], Matrix4x4.identity);
-            _previousPosition[tilemap] = tilePosition;
+        }
+        _previousPosition[tilemap] = tilePosition;
         }
     }
 
