@@ -204,9 +204,9 @@ MonoBehaviour:
   floodFill: {fileID: 0}
   dijkstra: {fileID: 851953555}
   a: {fileID: 0}
-  _floodfill: 1
+  _floodfill: 0
   _heuristic: 0
-  _dijkstra: 0
+  _dijkstra: 1
   _a: 0
 --- !u!114 &376100377
 MonoBehaviour:
