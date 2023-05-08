@@ -155,15 +155,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   main: {fileID: 519420031}
   tilemap: {fileID: 1448325284}
-  offSet: {x: 0, y: 0.3, z: 0}
+  offSet: {x: 0, y: 0.02, z: 0}
   originTile: {fileID: 11400000, guid: 5383f282ed47bb348966f72f0a1bfb37, type: 2}
   destinationTile: {fileID: 11400000, guid: 8b4c6329e021c8e4cb2f943ddfc7bd9e, type: 2}
   heuristic: {fileID: 0}
   floodFill: {fileID: 2145425825}
   dijkstra: {fileID: 0}
+  a: {fileID: 0}
   _floodfill: 1
   _heuristic: 0
   _dijkstra: 0
+  _a: 0
 --- !u!4 &376100375
 Transform:
   m_ObjectHideFlags: 0
@@ -199,9 +201,11 @@ MonoBehaviour:
   heuristic: {fileID: 0}
   floodFill: {fileID: 851953552}
   dijkstra: {fileID: 0}
+  a: {fileID: 0}
   _floodfill: 1
   _heuristic: 0
   _dijkstra: 0
+  _a: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

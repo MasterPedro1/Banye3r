@@ -222,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   main: {fileID: 519420031}
   tilemap: {fileID: 1448325284}
-  offSet: {x: 0, y: 0.3, z: 0}
+  offSet: {x: 0, y: 0.02, z: 0}
   originTile: {fileID: 11400000, guid: 17adf477ebf46a04e9afb891dc3c7ec8, type: 2}
   destinationTile: {fileID: 11400000, guid: 29a4d4a79c35b8648a0aaa636c1988e5, type: 2}
   heuristic: {fileID: 0}
