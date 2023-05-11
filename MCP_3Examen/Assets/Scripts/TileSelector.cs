@@ -4,21 +4,34 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Threading.Tasks;
+using static UnityEditor.PlayerSettings;
 
 public class TileSelector : MonoBehaviour
 {
     [SerializeField] Camera main;
     [SerializeField] Grid grid;
-    [SerializeField] Player scanArea;
     public Tilemap tileMap;
     public Tilemap infantery;
+    public Tilemap tank;
+    public Tilemap reconocimiento;
+    public Tilemap Caballeria;
     public Vector3 offset = new Vector3(0f, 0.02f, 0f);
     public TileBase originTile, destinyTile;
+
+    [HideInInspector]
+    public TileBase tb;
 
     private Dictionary<Tilemap, Vector3Int> _previousPosition = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _origin = new Dictionary<Tilemap, Vector3Int>();
     private Dictionary<Tilemap, Vector3Int> _goal = new Dictionary<Tilemap, Vector3Int>();
-    private Vector3Int tilePosition;
+
+    [SerializeField] Infantery infantery2;
+    [SerializeField] Tank tank2;
+    [SerializeField] Reconocimiento  reco;
+    [SerializeField] Caballeria cab;
+
+    bool _isPlayerSelected = false;
+    Vector3Int tilePosition;
 
     private void Start()
     {
@@ -28,31 +41,126 @@ public class TileSelector : MonoBehaviour
 
     private void Update()
     {
-        if (!scanArea.IsPlayerSelected) SelectTile();
+        if (!infantery2.IsPlayerSelected) SelectTile();
 
-        if(Input.GetMouseButtonDown(0) && !scanArea.IsPlayerSelected)
+        if (Input.GetMouseButtonDown(0))
         {
             if (infantery.HasTile(tilePosition))
             {
+               
+                infantery2.maxSteps = 30;
                 DetectTileClick(isOrigin: true);
-                scanArea.IsPlayerSelected = true;
+                infantery2.IsPlayerSelected = true;
                 ShowMovementArea();
+                DetectTileClick(isOrigin: false);
+                 
+            }
+            
+            if (tank.HasTile(tilePosition))
+            {
+               
+                    tank2.maxSteps = 50;
+                    DetectTileClick(isOrigin: true);
+                    tank2.IsPlayerSelected = true;
+                    ShowMovementArea();
+                    DetectTileClick(isOrigin: false);
+              
+            }
+
+            if (reconocimiento.HasTile(tilePosition))
+            {
+
+                reco.maxSteps = 60;
+                DetectTileClick(isOrigin: true);
+                reco.IsPlayerSelected = true;
+                ShowMovementArea();
+                DetectTileClick(isOrigin: false);
+
+            }
+
+            if (Caballeria.HasTile(tilePosition))
+            {
+
+                cab.maxSteps = 60;
+                DetectTileClick(isOrigin: true);
+                cab.IsPlayerSelected = true;
+                ShowMovementArea();
+                DetectTileClick(isOrigin: false);
+
             }
         }
 
-        if (Input.GetMouseButtonDown(1) && scanArea.IsPlayerSelected)
+        if (infantery2.IsPlayerSelected)
         {
             DetectTileClick(isOrigin: false);
-            scanArea.DrawPath(tilePosition);
+            infantery2.DrawPath(tilePosition);
+           
         }
 
-        if (scanArea.IsPlayerSelected && Input.GetKeyDown(KeyCode.Return)) scanArea.MovePlayer();
+        if (tank2.IsPlayerSelected)
+        {
+            DetectTileClick(isOrigin: false);
+           
+            tank2.DrawPath(tilePosition);
+           
+        }
 
+        if (reco.IsPlayerSelected)
+        {
+            DetectTileClick(isOrigin: false);
+            
+            reco.DrawPath(tilePosition);
+           
+        }
+
+        if (cab.IsPlayerSelected)
+        {
+            DetectTileClick(isOrigin: false);
+           
+            cab.DrawPath(tilePosition);
+        }
+
+        if (infantery2.IsPlayerSelected  && Input.GetKeyDown(KeyCode.Return))
+        {
+            DetectTileClick(isOrigin: false);
+            infantery2.MovePlayer();
+           
+        }
+
+        if (tank2.IsPlayerSelected && Input.GetKeyDown(KeyCode.Return))
+        {
+            DetectTileClick(isOrigin: false);
+            tank2.MovePlayer();
+            
+        }
+
+        if (reco.IsPlayerSelected && Input.GetKeyDown(KeyCode.Return))
+        {
+            DetectTileClick(isOrigin: false);
+            reco.MovePlayer();
+           
+        }
+
+        if (cab.IsPlayerSelected && Input.GetKeyDown(KeyCode.Return))
+        {
+            DetectTileClick(isOrigin: false);
+            cab.MovePlayer();
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            scanArea.IsPlayerSelected = false;
-            //scanArea.ClearTiles();
+            infantery2.IsPlayerSelected = false;
+            infantery2.ClearTiles();
+
+            tank2.IsPlayerSelected = false;
+            tank2.ClearTiles();
+
+            reco.IsPlayerSelected = false;
+            reco.ClearTiles();
+
+            cab.IsPlayerSelected = false;
+            cab.ClearTiles();
         }
+
     }
 
 
@@ -66,7 +174,6 @@ public class TileSelector : MonoBehaviour
         {
             if (tileMap.HasTile(tilePosition))
             {
-                print("regreso");
                 tileMap.SetTransformMatrix(tilePosition, Matrix4x4.TRS(offset, Quaternion.Euler(0, 0, 0), Vector3.one));
             }
             if (tileMap.HasTile(_previousPosition[tileMap]))
@@ -90,7 +197,6 @@ public class TileSelector : MonoBehaviour
         if (tileMap.HasTile(tilePosition))
         {
             var oldTile = tileMap.GetTile(tilePosition);
-            //tileMap.SetTile(tilePosition, newTile);
             selectedDictionary[tileMap] = tilePosition;
         }
     }
@@ -100,8 +206,17 @@ public class TileSelector : MonoBehaviour
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int cellPosition = grid.WorldToCell(new Vector3(mousePosition.x, mousePosition.y, 0f));
         Vector3 worldPosition = grid.CellToWorld(cellPosition) + new Vector3(1 / 2f, 1 / 2f, 0f);
-        //Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
-        scanArea.Origin = cellPosition;
-        scanArea.StartScan();
+        Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
+        infantery2.Origin = cellPosition;
+        infantery2.StartScan();
+
+        tank2.Origin = cellPosition;
+        tank2.StartScan();
+
+        reco.Origin = cellPosition;
+        reco.StartScan();
+
+        cab.Origin = cellPosition;
+        cab.StartScan();
     }
 }
