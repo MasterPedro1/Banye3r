@@ -35,6 +35,7 @@ public class Caballeria : MonoBehaviour
 
     public IEnumerator FloodField(float time)
     {
+        
         _frontier.Enqueue(Origin, 0);
         _cameFrom[Origin] = Vector3.zero;
         _costSoFar[Origin] = 0;

@@ -42,6 +42,9 @@ public class TileSelector : MonoBehaviour
     private void Update()
     {
         if (!infantery2.IsPlayerSelected) SelectTile();
+        if (!tank2.IsPlayerSelected) SelectTile();
+        if (!reco.IsPlayerSelected) SelectTile();
+        if (!cab.IsPlayerSelected) SelectTile();
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -59,11 +62,11 @@ public class TileSelector : MonoBehaviour
             if (tank.HasTile(tilePosition))
             {
                
-                    tank2.maxSteps = 50;
-                    DetectTileClick(isOrigin: true);
-                    tank2.IsPlayerSelected = true;
-                    ShowMovementArea();
-                    DetectTileClick(isOrigin: false);
+                 tank2.maxSteps = 50;
+                 DetectTileClick(isOrigin: true);
+                 tank2.IsPlayerSelected = true;
+                 ShowMovementArea2();
+                 DetectTileClick(isOrigin: false);
               
             }
 
@@ -73,7 +76,7 @@ public class TileSelector : MonoBehaviour
                 reco.maxSteps = 60;
                 DetectTileClick(isOrigin: true);
                 reco.IsPlayerSelected = true;
-                ShowMovementArea();
+                ShowMovementArea3();
                 DetectTileClick(isOrigin: false);
 
             }
@@ -84,7 +87,7 @@ public class TileSelector : MonoBehaviour
                 cab.maxSteps = 60;
                 DetectTileClick(isOrigin: true);
                 cab.IsPlayerSelected = true;
-                ShowMovementArea();
+                ShowMovementArea4();
                 DetectTileClick(isOrigin: false);
 
             }
@@ -150,6 +153,7 @@ public class TileSelector : MonoBehaviour
         {
             infantery2.IsPlayerSelected = false;
             infantery2.ClearTiles();
+            
 
             tank2.IsPlayerSelected = false;
             tank2.ClearTiles();
@@ -207,16 +211,48 @@ public class TileSelector : MonoBehaviour
         Vector3Int cellPosition = grid.WorldToCell(new Vector3(mousePosition.x, mousePosition.y, 0f));
         Vector3 worldPosition = grid.CellToWorld(cellPosition) + new Vector3(1 / 2f, 1 / 2f, 0f);
         Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
+
         infantery2.Origin = cellPosition;
         infantery2.StartScan();
+    }
 
+    private void ShowMovementArea2()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(new Vector3(mousePosition.x, mousePosition.y, 0f));
+        Vector3 worldPosition = grid.CellToWorld(cellPosition) + new Vector3(1 / 2f, 1 / 2f, 0f);
+        Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
+
+       
         tank2.Origin = cellPosition;
         tank2.StartScan();
+    }
+
+
+    private void ShowMovementArea3()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(new Vector3(mousePosition.x, mousePosition.y, 0f));
+        Vector3 worldPosition = grid.CellToWorld(cellPosition) + new Vector3(1 / 2f, 1 / 2f, 0f);
+        Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
+
 
         reco.Origin = cellPosition;
         reco.StartScan();
+    }
+
+
+    private void ShowMovementArea4()
+    {
+        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int cellPosition = grid.WorldToCell(new Vector3(mousePosition.x, mousePosition.y, 0f));
+        Vector3 worldPosition = grid.CellToWorld(cellPosition) + new Vector3(1 / 2f, 1 / 2f, 0f);
+        Debug.Log("Clicked on cell " + cellPosition + " at position " + worldPosition);
+
 
         cab.Origin = cellPosition;
         cab.StartScan();
     }
+
+    
 }

@@ -36,6 +36,7 @@ public class Infantery : MonoBehaviour
 
     public IEnumerator FloodField(float time)
     {
+        
         _frontier.Enqueue(Origin, 0);
         _cameFrom[Origin] = Vector3.zero;
         _costSoFar[Origin] = 0;
@@ -77,7 +78,7 @@ public class Infantery : MonoBehaviour
             "road_end_b" => 500,
             "crops_plowed_growth" => 200,
             "ground_water" => 300,
-            
+
             _ => 1
         };
 
